@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <string.h>
+
+void explode(char str1[], char splitter, char str2[][10], int *count) {
+    int len = strlen(str1);
+    int j = 0, k = 0;
+
+    // วนลูปผ่านทุกตัวอักษรใน str1
+    for (int i = 0; i <= len; i++) {
+        // ถ้าพบตัวแบ่ง (splitter) หรือตำแหน่งสุดท้ายของ str1
+        if (str1[i] == splitter || i == len) {
+            // ก็นำสตริงที่เราเรียกว่า token มาเก็บไว้ใน str2
+            str2[j][k] = '\0'; // ใส่ null terminator เพื่อให้เป็นสตริงที่ถูกต้อง
+            j++; // เพิ่มค่า index ของ str2
+            k = 0; // รีเซ็ตค่า index ของ str2 กลับไปที่ 0
+        } else {
+            // ถ้ายังไม่พบตัวแบ่ง (splitter)
+            // ก็เพิ่มตัวอักษรที่ i ใน str1 เข้าไปใน str2
+            str2[j][k++] = str1[i];
+        }
+    }
+    // กำหนดค่า count เท่ากับจำนวนข้อความที่แยกได้
+    *count = j;
+}
+
+int main() {
+    char out[20][10]; // กำหนดขนาดของ str2
+    int num; // เก็บจำนวนข้อความที่แยกได้
+
+    // เรียกใช้ฟังก์ชัน explode
+    explode("I/Love/You", '/', out, &num);
+
+    // แสดงผลลัพธ์
+    printf("Count: %d\n", num);
+    for (int i = 0; i < num; i++) {
+        printf("str2[%d] = %s\n", i, out[i]);
+    }
+
+    return 0;
+}
