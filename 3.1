@@ -1,0 +1,33 @@
+#include <stdio.h>
+
+struct student {
+    char name[20];
+    int age;
+    char sex;
+    float gpa;
+};
+
+void upgrade(struct student *child) {
+    // เพิ่ม gpa ขึ้นตามเพศของนักเรียน
+    if (child->sex == 'M') {
+        // สำหรับผู้ชาย เพิ่ม 10%
+        child->gpa *= 1.1;
+    } else if (child->sex == 'F') {
+        // สำหรับผู้หญิง เพิ่ม 20%
+        child->gpa *= 1.2;
+    }
+}
+
+int main() {
+    struct student aboy;
+    aboy.sex = 'M';
+    aboy.gpa = 3.00;
+
+    // เรียกใช้งานฟังก์ชัน upgrade() โดยส่งเป็น pointer ของโครงสร้าง student
+    upgrade(&aboy);
+
+    // พิมพ์ค่า GPA หลังการอัพเกรด
+    printf("%.2f", aboy.gpa);
+
+    return 0;
+}
