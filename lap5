@@ -1,0 +1,51 @@
+//เขียนคำสั่งในการสร้างและเรียกใช้ฟังก์ชัน GetMatrix() เพื่อรับจำนวนแถว คอลัมน์ และค่าของแต่ละสมาชิกในเมทริกซ์จากคีย์บอร์ดตามโปรโตไทป์ต่อไปนี้
+#include <stdio.h>
+#include <stdlib.h> 
+
+void GetMatrix(int **value, int *row, int *col);
+
+int main() {
+    int *data; 
+    int m, n;  
+
+
+    GetMatrix(&data, &m, &n);
+
+
+    printf("Matrix values:\n");
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < n; ++j) {
+            printf("%d ", data[i * n + j]); // Accessing the matrix values
+        }
+        printf("\n");
+    }
+
+
+    free(data);
+
+    return 0;
+}
+
+void GetMatrix(int **value, int *row, int *col) {
+    printf("Enter the number of rows: ");
+    scanf("%d", row);
+
+    printf("Enter the number of columns: ");
+    scanf("%d", col);
+
+
+    *value = (int *)malloc((*row) * (*col) * sizeof(int));
+    if (*value == NULL) {
+        printf("Memory allocation failed\n");
+        *row = *col = 0; // Update row and col to indicate failure
+        return;
+    }
+
+    printf("Enter the matrix elements:\n");
+    for (int i = 0; i < *row; ++i) {
+        for (int j = 0; j < *col; ++j) {
+            printf("Element [%d][%d]: ", i, j);
+            scanf("%d", (*value) + i * (*col) + j); // Store the value in the matrix
+        }
+    }
+}
