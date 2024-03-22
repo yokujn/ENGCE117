@@ -1,0 +1,106 @@
+#include <iostream>
+#include <string.h>
+
+struct studentNode {
+    char name[20];
+    int age;
+    char sex;
+    float gpa;
+};
+
+class LinkedList {
+protected:
+    struct studentNode *start, **now;
+
+public:
+    LinkedList() {
+        start = NULL;
+        now = &start;
+    }
+
+    ~LinkedList() {
+        while (start != NULL) {
+            struct studentNode *temp = start;
+            start = start->next;
+            delete temp;
+        }
+    }
+
+    void InsNode(char n[], int a, char s, float g) {
+        struct studentNode *newNode = new studentNode;
+        strcpy(newNode->name, n);
+        newNode->age = a;
+        newNode->sex = s;
+        newNode->gpa = g;
+        newNode->next = *now;
+        *now = newNode;
+    }
+
+    void DelNode() {
+        if (*now == NULL) {
+            return;
+        }
+        struct studentNode *temp = *now;
+        *now = (*now)->next;
+        delete temp;
+    }
+
+    void GoNext() {
+        if (*now != NULL) {
+            now = &((*now)->next);
+        }
+    }
+
+    virtual void ShowNode() {
+        if (*now != NULL) {
+            std::cout << "Name: " << (*now)->name << ", Age: " << (*now)->age << ", Sex: " << (*now)->sex << ", GPA: " << (*now)->gpa << std::endl;
+        }
+    }
+};
+
+class NewList : public LinkedList {
+public:
+    void GoFirst() {
+        now = &start;
+    }
+
+    void ShowNode() override {
+        struct studentNode *walk = start;
+        while (walk != NULL) {
+            std::cout << "Name: " << walk->name << ", Age: " << walk->age << ", Sex: " << walk->sex << ", GPA: " << walk->gpa << std::endl;
+            walk = walk->next;
+        }
+    }
+};
+
+int main() {
+    LinkedList listA;
+    NewList listB;
+    LinkedList *listC;
+
+    listA.InsNode("one", 1, 'A', 1.1);
+    listA.InsNode("two", 2, 'B', 2.2);
+    listA.InsNode("three", 3, 'C', 3.3);
+    listA.GoNext();
+    listA.ShowNode();
+    std::cout << std::endl;
+
+    listB.InsNode("four", 4, 'D', 4.4);
+    listB.InsNode("five", 5, 'E', 5.5);
+    listB.InsNode("six", 6, 'F', 6.6);
+    listB.GoNext();
+    listB.DelNode();
+    listB.ShowNode();
+    std::cout << std::endl;
+
+    listC = &listA;
+    listC->GoNext();
+    listC->ShowNode();
+    std::cout << std::endl;
+
+    listC = &listB;
+    listC->ShowNode();
+    std::cout << std::endl;
+
+    return 0;
+}
