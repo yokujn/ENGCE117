@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <string.h>
+
+void explode(char str1[], char splitter, char str2[][10], int *count) {
+    int len = strlen(str1);
+    int j = 0, k = 0;
+
+    for (int i = 0; i <= len; ++i) {
+        if (str1[i] == splitter || str1[i] == '\0') {
+            str2[j][k] = '\0';  // สิ้นสุดสตริงด้วย null terminator
+            j++;  // เลื่อนไปยังข้อความถัดไปในอาร์เรย์
+            k = 0; // เริ่มต้นที่ตำแหน่งแรกของข้อความใหม่
+        } else {
+            str2[j][k++] = str1[i];  // เก็บตัวอักขระลงในอาร์เรย์
+        }
+    }
+
+    *count = j;  // กำหนดค่าจำนวนข้อความที่แยกได้
+}
+
+int main() {
+    char out[20][10];  // อาร์เรย์สำหรับเก็บข้อความที่แยกออกจากกัน
+    int num;
+
+    explode("I/Love/You", '/', out, &num);
+
+    // แสดงผลลัพธ์
+    printf("Number of substrings: %d\n", num);
+    for (int i = 0; i < num; ++i) {
+        printf("Substring %d: %s\n", i + 1, out[i]);
+    }
+
+    return 0;
+}
