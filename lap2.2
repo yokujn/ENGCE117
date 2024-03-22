@@ -1,33 +1,24 @@
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h> // สำหรับ malloc และ free
-
+#include <stdlib.h> 
 char* reverse(char str1[]) {
     int len = strlen(str1);
-    char *str2 = (char*)malloc((len + 1) * sizeof(char)); // จองหน่วยความจำสำหรับ str2 (รวมถึง null terminator)
-    
-    // กลับลำดับของอักขระใน str1 และเก็บใน str2
+    char *str2 = (char*)malloc((len + 1) * sizeof(char)); 
+
     for (int i = len - 1, j = 0; i >= 0; --i, ++j) {
         str2[j] = str1[i];
     }
-    str2[len] = '\0'; // เพิ่ม null terminator เพื่อให้ str2 เป็นสตริงที่ถูกต้อง
-
-    return str2; // คืนค่า pointer ไปยังสตริงที่กลับด้านแล้ว
+    str2[len] = '\0'; 
+    return str2; 
 }
 
 int main() {
     char text[50] = "I Love You";
     char *out;
-
-    // เรียกใช้ฟังก์ชัน reverse
     out = reverse(text);
-
-    // แสดงผลลัพธ์
     printf("Original: %s\n", text);
     printf("Reversed: %s\n", out);
 
-    // คืนทรัพยากรหน่วยความจำที่จองไว้สำหรับ str2
-    free(out);
 
     return 0;
 }
