@@ -1,0 +1,116 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct studentNode {
+    char name[20];
+    int age;
+    char sex;
+    float gpa;
+    struct studentNode *next;
+    struct studentNode *back;
+};
+
+void ShowAll(struct studentNode *walk);
+struct studentNode *AddNode(struct studentNode **start, char n[], int a, char s, float g);
+void InsertNode(struct studentNode **now, char n[], int a, char s, float g);
+void DelNode(struct studentNode **now);
+
+int main() {
+    struct studentNode *start = NULL, *now = NULL;
+    now = AddNode(&start, "one", 6, 'M', 3.11);
+    ShowAll(start);
+    printf("\n");
+    now = AddNode(&start, "two", 8, 'F', 3.22);
+    ShowAll(start);
+    printf("\n");
+    InsertNode(&now, "three", 10, 'M', 3.33);
+    ShowAll(start);
+    printf("\n");
+    InsertNode(&now, "four", 12, 'F', 3.44);
+    ShowAll(start);
+    printf("\n");
+    now = now->back;
+    DelNode(&now);
+    ShowAll(start);
+    printf("\n");
+    DelNode(&now);
+    ShowAll(start);
+    printf("\n");
+    DelNode(&now);
+    ShowAll(start);
+    printf("\n");
+    return 0;
+}
+
+void ShowAll(struct studentNode *walk) {
+    while (walk != NULL) {
+        printf("%s ", walk->name);
+        walk = walk->next;
+    }
+}
+
+struct studentNode *AddNode(struct studentNode **start, char n[], int a, char s, float g) {
+    struct studentNode *newNode = (struct studentNode *)malloc(sizeof(struct studentNode));
+    if (newNode == NULL) {
+        printf("Memory allocation failed\n");
+        exit(1);
+    }
+    strcpy(newNode->name, n);
+    newNode->age = a;
+    newNode->sex = s;
+    newNode->gpa = g;
+    newNode->next = NULL;
+    newNode->back = NULL;
+
+    if (*start == NULL) {
+        *start = newNode;
+    } else {
+        struct studentNode *temp = *start;
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+        newNode->back = temp;
+    }
+
+    return newNode;
+}
+
+void InsertNode(struct studentNode **now, char n[], int a, char s, float g) {
+    if (*now == NULL) {
+        printf("Current node cannot be NULL for insertion.\n");
+        return;
+    }
+    struct studentNode *newNode = (struct studentNode *)malloc(sizeof(struct studentNode));
+    if (newNode == NULL) {
+        printf("Memory allocation failed\n");
+        exit(1);
+    }
+    strcpy(newNode->name, n);
+    newNode->age = a;
+    newNode->sex = s;
+    newNode->gpa = g;
+    newNode->next = *now;
+    newNode->back = (*now)->back;
+    (*now)->back = newNode;
+    if (newNode->back != NULL) {
+        newNode->back->next = newNode;
+    }
+}
+
+void DelNode(struct studentNode **now) {
+    if (*now == NULL) {
+        printf("Current node cannot be NULL for deletion.\n");
+        return;
+    }
+    struct studentNode *temp = *now;
+    if ((*now)->next != NULL) {
+        (*now)->next->back = (*now)->back;
+    }
+    if ((*now)->back != NULL) {
+        (*now)->back->next = (*now)->next;
+    }
+    *now = (*now)->next;
+    free(temp);
+}
