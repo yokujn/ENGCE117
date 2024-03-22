@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <stdlib.h> // For dynamic memory allocation
+
+int *GetMatrix(int *row, int *col);
+
+int main() {
+    int *data; // Pointer to store the matrix values
+    int m, n;  // Number of rows and columns
+
+    // Call GetMatrix function to get matrix details from the user
+    data = GetMatrix(&m, &n);
+
+    // Use the matrix data as needed
+    // For demonstration, printing the matrix values
+    printf("Matrix values:\n");
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < n; ++j) {
+            printf("%d ", data[i * n + j]); // Accessing the matrix values
+        }
+        printf("\n");
+    }
+
+    // Free dynamically allocated memory
+    free(data);
+
+    return 0;
+}
+
+int *GetMatrix(int *row, int *col) {
+    printf("Enter the number of rows: ");
+    scanf("%d", row);
+
+    printf("Enter the number of columns: ");
+    scanf("%d", col);
+
+    // Dynamically allocate memory for the matrix
+    int *value = (int *)malloc((*row) * (*col) * sizeof(int));
+    if (value == NULL) {
+        printf("Memory allocation failed\n");
+        *row = *col = 0; // Update row and col to indicate failure
+        return NULL;
+    }
+
+    // Input matrix elements
+    printf("Enter the matrix elements:\n");
+    for (int i = 0; i < *row; ++i) {
+        for (int j = 0; j < *col; ++j) {
+            printf("Element [%d][%d]: ", i, j);
+            scanf("%d", value + i * (*col) + j); // Store the value in the matrix
+        }
+    }
+
+    return value;
+}
